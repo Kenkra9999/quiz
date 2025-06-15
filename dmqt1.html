@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quách Trường Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .input-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .input-section input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .input-section input:focus {
+            outline: none;
+            border-color: #6e8efb;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .question:hover {
+            transform: translateY(-5px);
+        }
+
+        .question p {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .question input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #6e8efb;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #6e8efb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #5a78e0;
+        }
+
+        .result {
+            font-weight: 600;
+            font-size: 20px;
+            color: #27ae60;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .motivation {
+            font-size: 18px;
+            color: #e67e22;
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .link-hidden {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .link-shown {
+            display: block;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link-shown a {
+            color: #6e8efb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .link-shown a:hover {
+            color: #5a78e0;
+            text-decoration: underline;
+        }
+
+        .wheel-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #luckyWheel {
+            display: block;
+            margin: 0 auto;
+        }
+
+        #spinButton {
+            margin-top: 20px;
+        }
+
+        .wheel-result {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e67e22;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f00;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .sad-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            animation: fadeOut 2s forwards;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .sad-emoji {
+            position: absolute;
+            font-size: 50px;
+            animation: float 2s ease-out forwards;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧠 Quiz về Quách Trường</h1>
+
+        <div class="input-section">
+            <label for="ho">Họ:</label>
+            <input type="text" id="ho" placeholder="Nhập họ của bạn">
+            <label for="ten">Tên:</label>
+            <input type="text" id="ten" placeholder="Nhập tên của bạn">
+            <label for="noilamviec">Nơi làm việc:</label>
+            <input type="text" id="noilamviec" placeholder="Nhập nơi làm việc">
+        </div>
+
+        <form id="quiz">
+            <div class="question">
+                <p>1. Quách Trường có đẹp trai không?</p>
+                <label><input type="radio" name="q1" value="a"> a. Rất đẹp trai</label>
+                <label><input type="radio" name="q1" value="b"> b. Cũng hơi hơi</label>
+                <label><input type="radio" name="q1" value="c"> c. Cũng cũng</label>
+                <label><input type="radio" name="q1" value="d"> d. Ngầu lắm</label>
+            </div>
+
+            <div class="question">
+                <p>2. Bạn biết đến Quách Trường ở đâu?</p>
+                <label><input type="radio" name="q2" value="a"> a. Bạn từ bé</label>
+                <label><input type="radio" name="q2" value="b"> b. Tình cờ gặp</label>
+                <label><input type="radio" name="q2" value="c"> c. Là một người nổi tiếng</label>
+                <label><input type="radio" name="q2" value="d"> d. Trên mạng</label>
+            </div>
+
+            <div class="question">
+                <p>3. Quách Trường đang làm gì?</p>
+                <label><input type="radio" name="q3" value="a"> a. Lập trình</label>
+                <label><input type="radio" name="q3" value="b"> b. Ca sĩ</label>
+                <label><input type="radio" name="q3" value="c"> c. TikToker</label>
+                <label><input type="radio" name="q3" value="d"> d. Nghỉ hưu</label>
+            </div>
+
+            <div class="question">
+                <p>4. Quách Trường học ở đâu?</p>
+                <label><input type="radio" name="q4" value="a"> a. Harvard</label>
+                <label><input type="radio" name="q4" value="b"> b. Đại học Sài Gòn</label>
+                <label><input type="radio" name="q4" value="c"> c. MIT</label>
+                <label><input type="radio" name="q4" value="d"> d. Đại học Trường Quách</label>
+            </div>
+
+            <div class="question">
+                <p>5. Sở thích của Quách Trường là gì?</p>
+                <label><input type="radio" name="q5" value="a"> a. Viết code</label>
+                <label><input type="radio" name="q5" value="b"> b. Ăn bánh tráng</label>
+                <label><input type="radio" name="q5" value="c"> c. Chơi game</label>
+                <label><input type="radio" name="q5" value="d"> d. Chơi bida</label>
+            </div>
+
+            <button type="button" onclick="chamDiem()">Nộp bài</button>
+        </form>
+
+        <div class="result" id="ketqua"></div>
+        <div class="motivation" id="motivation"></div>
+        <div class="link-hidden" id="linktrang">
+            👉 Bạn được thưởng 1 link bí mật: <br>
+            <a href="https://quachtruong.vip/hihi.html" target="_blank">👉 Truy cập trang bí mật</a>
+        </div>
+
+        <div class="wheel-container" id="wheelContainer" style="display: none;">
+            <canvas id="luckyWheel" width="400" height="400"></canvas>
+            <button id="spinButton" onclick="spinWheel()">Quay may mắn</button>
+            <div class="wheel-result" id="wheelResult"></div>
+        </div>
+    </div>
+
+    <script>
+        function chamDiem() {
+            let ho = document.getElementById("ho").value.trim() || "Người bí ẩn";
+            let ten = document.getElementById("ten").value.trim() || "";
+            let noilamviec = document.getElementById("noilamviec").value.trim() || "Nơi bí ẩn";
+
+            const dapan = {
+                q1: "a",
+                q2: "c",
+                q3: "a",
+                q4: "b",
+                q5: "a"
+            };
+
+            let diem = 0;
+            for (let i = 1; i <= 5; i++) {
+                const chon = document.querySelector(`input[name="q${i}"]:checked`);
+                if (chon && chon.value === dapan[`q${i}`]) {
+                    diem++;
+                }
+            }
+
+            const ketqua = document.getElementById("ketqua");
+            const motivation = document.getElementById("motivation");
+            const linktrang = document.getElementById("linktrang");
+            const wheelContainer = document.getElementById("wheelContainer");
+
+            ketqua.innerHTML = `✅ ${ho} ${ten} từ ${noilamviec} đúng ${diem}/5 câu.`;
+
+            const motivationalQuotes = [
+                "🌟 Mỗi bước nhỏ hôm nay đều là nền tảng cho thành công lớn mai sau!",
+                "💪 Không bao giờ là quá muộn để bắt đầu lại và chinh phục ước mơ!",
+                "🚀 Hãy tin vào bản thân, bạn có thể làm được nhiều hơn bạn nghĩ!",
+                "🌈 Cuộc sống là một hành trình, hãy tận hưởng từng khoảnh khắc!",
+                "🔥 Một tia lửa nhỏ có thể thắp sáng cả bầu trời, hãy tiếp tục cố gắng!"
+            ];
+
+            const rewards = [
+                "🎉 Một voucher cà phê miễn phí!",
+                "🎁 Một món quà bí mật từ Quách Trường!",
+                "🌟 Một lời chúc đặc biệt từ đội ngũ!",
+                "🍵 Một buổi trà chiều thú vị!",
+                "🎈 Một vé tham gia sự kiện độc quyền!"
+            ];
+
+            if (diem >= 4) {
+                linktrang.className = "link-shown";
+                motivation.innerHTML = "";
+                wheelContainer.style.display = "block";
+                triggerCelebration(rewards, motivationalQuotes);
+            } else if (diem >= 1) {
+                linktrang.innerHTML = "❌ Bạn cần ít nhất 4 câu đúng để mở khóa link!";
+                linktrang.className = "link-shown";
+                const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+                motivation.innerHTML = randomQuote;
+                wheelContainer.style.display = "block";
+                triggerCelebration(rewards, motivationalQuotes);
+            } else {
+                linktrang.innerHTML = "❌ Bạn cần ít nhất 4 câu đúng để mở khóa link!";
+                linktrang.className = "link-shown";
+                motivation.innerHTML = "😔 Đừng buồn, hãy thử lại để khám phá những điều thú vị nhé!";
+                wheelContainer.style.display = "block";
+                triggerSadEffect();
+            }
+
+            drawWheel();
+        }
+
+        function triggerCelebration(rewards, quotes) {
+            const celebrationDiv = document.createElement("div");
+            celebrationDiv.className = "celebration";
+            document.body.appendChild(celebrationDiv);
+
+            // Display two random rewards
+            const selectedRewards = [];
+            while (selectedRewards.length < 2) {
+                const randomReward = rewards[Math.floor(Math.random() * rewards.length)];
+                if (!selectedRewards.includes(randomReward)) {
+                    selectedRewards.push(randomReward);
+                }
+            }
+            document.getElementById("wheelResult").innerHTML = `${selectedRewards.join(" và ")}<br>${quotes[Math.floor(Math.random() * quotes.length)]}`;
+
+            // Confetti effect
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement("div");
+                confetti.className = "confetti";
+                confetti.style.left = Math.random() * 100 + "vw";
+                confetti.style.background = ["#f00", "#0f0", "#00f", "#ff0", "#f0f"][Math.floor(Math.random() * 5)];
+                confetti.style.animationDelay = Math.random() * 2 + "s";
+                celebrationDiv.appendChild(confetti);
+            }
+
+            setTimeout(() => celebrationDiv.remove(), 5000);
+        }
+
+        function triggerSadEffect() {
+            const sadDiv = document.createElement("div");
+            sadDiv.className = "sad-effect";
+            document.body.appendChild(sadDiv);
+
+            // Sad emojis
+            for (let i = 0; i < 10; i++) {
+                const emoji = document.createElement("div");
+                emoji.className = "sad-emoji";
+                emoji.innerHTML = "😢";
+                emoji.style.left = Math.random() * 100 + "vw";
+                emoji.style.top = Math.random() * 100 + "vh";
+                emoji.style.animationDelay = Math.random() * 1 + "s";
+                sadDiv.appendChild(emoji);
+            }
+
+            setTimeout(() => sadDiv.remove(), 3000);
+        }
+
+        const segments = [
+            "Chúc mừng! Bạn siêu may mắn!",
+            "Hơi tiếc, lần sau sẽ tốt hơn!",
+            "Bạn được +1 năng lượng tích cực!",
+            "Ôi, suýt nữa thì trúng lớn!",
+            "Cố lên, vận may đang tới!",
+            "Bạn là ngôi sao hôm nay!"
+        ];
+        const colors = [
+            "linear-gradient(45deg, #FF6B6B, #FF8E53)",
+            "linear-gradient(45deg, #4ECDC4, #45B7D1)",
+            "linear-gradient(45deg, #96CEB4, #A8E4A0)",
+            "linear-gradient(45deg, #FFEEAD, #FFD700)",
+            "linear-gradient(45deg, #D4A5A5, #FF9999)",
+            "linear-gradient(45deg, #6B7280, #9CA3AF)"
+        ];
+        let currentAngle = 0;
+        let isSpinning = false;
+
+        function drawWheel() {
+            const canvas = document.getElementById("luckyWheel");
+            const ctx = canvas.getContext("2d");
+            const radius = canvas.width / 2;
+            const segmentAngle = (2 * Math.PI) / segments.length;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Save context for rotation
+            ctx.save();
+            ctx.translate(radius, radius);
+            ctx.rotate((currentAngle * Math.PI) / 180);
+            ctx.translate(-radius, -radius);
+
+            // Draw wheel segments
+            for (let i = 0; i < segments.length; i++) {
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 10, i * segmentAngle, (i + 1) * segmentAngle);
+                const gradient = ctx.createLinearGradient(radius, 0, radius, canvas.height);
+                const colorStops = colors[i].match(/#[\da-fA-F]{6}/g);
+                gradient.addColorStop(0, colorStops[0]);
+                gradient.addColorStop(1, colorStops[1]);
+                ctx.fillStyle = gradient;
+                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+                ctx.shadowBlur = 10;
+                ctx.fill();
+                ctx.strokeStyle = "#FFF";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Draw text
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(i * segmentAngle + segmentAngle / 2);
+                ctx.fillStyle = "#FFF";
+                ctx.font = "bold 14px Poppins";
+                ctx.textAlign = "right";
+                ctx.textBaseline = "middle";
+                ctx.fillText(segments[i], radius - 30, 0);
+                ctx.restore();
+            }
+
+            ctx.restore();
+
+            // Draw center circle
+            ctx.beginPath();
+            ctx.arc(radius, radius, 30, 0, 2 * Math.PI);
+            ctx.fillStyle = "#FFF";
+            ctx.fill();
+            ctx.strokeStyle = "#333";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw arrow pointing downward at the top
+            ctx.beginPath();
+            ctx.moveTo(radius, 10);
+            ctx.lineTo(radius - 20, 50);
+            ctx.lineTo(radius + 20, 50);
+            ctx.closePath();
+            ctx.fillStyle = "#FF0000";
+            ctx.fill();
+            ctx.strokeStyle = "#333";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.shadowBlur = 0; // Reset shadow
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById("spinButton").disabled = true;
+
+            const segmentAngle = 360 / segments.length;
+            const targetSegment = Math.floor(Math.random() * segments.length);
+            const targetAngle = targetSegment * segmentAngle;
+            const spinAngle = 360 * 5 + targetAngle; // 5 full spins plus target angle
+            let startAngle = currentAngle;
+            let startTime = null;
+            const duration = 5000; // 5 seconds
+
+            function easeOutQuint(t) {
+                return 1 - Math.pow(1 - t, 5);
+            }
+
+            function animate(time) {
+                if (!startTime) startTime = time;
+                const progress = Math.min((time - startTime) / duration, 1);
+                const easedProgress = easeOutQuint(progress);
+                currentAngle = startAngle + (spinAngle - startAngle) * easedProgress;
+                drawWheel();
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    currentAngle = targetAngle; // Snap to exact segment
+                    isSpinning = false;
+                    document.getElementById("spinButton").disabled = false;
+                    document.getElementById("wheelResult").innerHTML = segments[targetSegment];
+                    drawWheel(); // Redraw to ensure alignment
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+
+</html>
