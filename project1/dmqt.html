@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quách Trường Quiz</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 700px;
+            margin: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .result {
+            font-weight: bold;
+            font-size: 18px;
+            color: green;
+            margin-top: 20px;
+        }
+
+        .link-hidden {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .link-shown {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧠 Quiz về Quách Trường</h1>
+        <form id="quiz">
+            <!-- Câu hỏi ví dụ -->
+            <p>1. Quách Trường có đẹp trai không?</p>
+            <input type="radio" name="q1" value="a"> a. Rất đẹp trai<br>
+            <input type="radio" name="q1" value="b"> b. Cũng hơi hơi<br>
+            <input type="radio" name="q1" value="c"> c. Cũng cũng<br>
+            <input type="radio" name="q1" value="d"> d. Ngầu lắm<br><br>
+
+            <p>2. Bạn biết đến Quách Trường ở đâu?</p>
+            <input type="radio" name="q2" value="a"> a. Bạn từ bé<br>
+            <input type="radio" name="q2" value="b"> b. Tình cờ gặp<br>
+            <input type="radio" name="q2" value="c"> c. Là một người nổi tiếng<br>
+            <input type="radio" name="q2" value="d"> d. Trên mạng<br><br>
+
+            <p>3. Quách Trường đang làm gì?</p>
+            <input type="radio" name="q3" value="a"> a. Lập trình<br>
+            <input type="radio" name="q3" value="b"> b. Ca sĩ<br>
+            <input type="radio" name="q3" value="c"> c. TikToker<br>
+            <input type="radio" name="q3" value="d"> d. Nghỉ hưu<br><br>
+
+            <p>4. Quách Trường học ở đâu?</p>
+            <input type="radio" name="q4" value="a"> a. Harvard<br>
+            <input type="radio" name="q4" value="b"> b. Đại học Sài Gòn<br>
+            <input type="radio" name="q4" value="c"> c. MIT<br>
+            <input type="radio" name="q4" value="d"> d. Đại học Trường Quách<br><br>
+
+            <p>5. Sở thích của Quách Trường là gì?</p>
+            <input type="radio" name="q5" value="a"> a. Viết code<br>
+            <input type="radio" name="q5" value="b"> b. Ăn bánh tráng<br>
+            <input type="radio" name="q5" value="c"> c. Chơi game<br>
+            <input type="radio" name="q5" value="d"> d. Chơi bida<br><br>
+
+            <button type="button" onclick="chamDiem()">Nộp bài</button>
+        </form>
+
+        <div class="result" id="ketqua"></div>
+        <div class="link-hidden" id="linktrang">
+            👉 Bạn được thưởng 1 link bí mật: <br>
+            <a href="https://quachtruong.vip/hihi.html" target="_blank">👉 Truy cập trang bí mật</a>
+        </div>
+    </div>
+
+    <script>
+        function chamDiem() {
+            let dapan = {
+                q1: "a",
+                q2: "c",
+                q3: "a",
+                q4: "b",
+                q5: "a"
+            };
+
+            let diem = 0;
+            for (let i = 1; i <= 5; i++) {
+                let chon = document.querySelector('input[name="q' + i + '"]:checked');
+                if (chon && chon.value === dapan["q" + i]) {
+                    diem++;
+                }
+            }
+
+            document.getElementById("ketqua").innerHTML = "✅ Bạn đúng " + diem + "/5 câu.";
+
+            if (diem >= 4) {
+                document.getElementById("linktrang").className = "link-shown";
+            } else {
+                document.getElementById("linktrang").innerHTML = "❌ Bạn cần ít nhất 4 câu đúng để mở khóa link!";
+                document.getElementById("linktrang").className = "link-shown";
+            }
+        }
+    </script>
+</body>
+
+</html>
